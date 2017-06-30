@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+
+cd "${1%/*}"
+strace -ff -e trace=file ./"${1#**/}" >& tmp
+cat tmp | sed 's/\[pid [0-9]\+\] //' | grep -v '^open("/' | grep open | grep O_WRONLY
+cat tmp | sed 's/\[pid [0-9]\+\] //' | grep -v '^open("/' | grep open | grep O_RDONLY
